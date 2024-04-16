@@ -1,0 +1,1 @@
+import pandas as pd mortality = pd.read_csv('mortality.txt')mortality2 = mortality.rename(columns={'t"County Code"':'COUNTYFP'})print(mortality2.columns)

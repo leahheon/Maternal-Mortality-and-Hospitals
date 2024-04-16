@@ -1,0 +1,1 @@
+import pandas as pd hospitals = pd.read_csv('hospitals.csv')fips = hospitals.groupby('COUNTYFIPS')print(fips.size())trauma = hospitals.groupby('TRAUMA')trauma = trauma.replace("Not Available", 0)print(trauma.size())
