@@ -16,6 +16,10 @@ geo = gpd.GeoDataFrame(data=hospitals,geometry=geom,crs=wgs84)
 
 # group hospital data by county fips code and trauma level 
 counts = hospitals.groupby(['COUNTYFP','TRAUMA']).size()
+beds = counties.merge(counts,left_on='GEOID',right_on='COUNTYFP',how='left')
+beds = beds.fillna(0)
+beds.to_file('beds.gpkg',layer='beds')
+
 by_county = counts.unstack()
 by_county = by_county.fillna(0)
 
@@ -57,3 +61,22 @@ merge = merge.fillna(0)
 print(merge)
 merge.to_csv('trauma.csv')
 merge.to_file('trauma.gpkg',layer='trauma')
+
+df = gpd.read_file('trauma.gpkg')
+def lookup_coordinates(geoid):
+    latitude = ...
+    longitude = ...
+    return latitude, longitude
+
+latitudes = []
+longitudes = []
+
+for geoid in df['GEOID']:
+    latitude, longitude = lookup_coordinates(geoid)
+    latitudes.append(latitude)
+    longitudes.append(longitude)
+    
+df['Latitude'] = latitudes
+df['Longitude'] = longitudes
+
+df.to_file('trauma2.gpkg',layer='trauma2')
