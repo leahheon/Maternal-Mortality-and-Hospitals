@@ -15,29 +15,29 @@ geom = gpd.points_from_xy(hospitals['LONGITUDE'],hospitals['LATITUDE'])
 geo = gpd.GeoDataFrame(data=hospitals,geometry=geom,crs=wgs84)
 
 # group hospital data by county fips code and trauma level 
-counts = hospitals.groupby(['COUNTYFP','TRAUMA']).size()
+counts = hospitals.groupby(['COUNTYFP','BEDS']).size().reset_index(name='hospital_beds')
 beds = counties.merge(counts,left_on='GEOID',right_on='COUNTYFP',how='left')
 beds = beds.fillna(0)
 beds.to_file('beds.gpkg',layer='beds')
-
+#%%
 by_county = counts.unstack()
 by_county = by_county.fillna(0)
 
 by_county = by_county.rename(columns={'LEVEL I':'Level 1',
                           'LEVEL I ADULT':'Level 1 Adult',
-                          'LEVEL I ADULT,LEVEL I PEDIATRIC':'Level 1 Adult1',
-                          'LEVEL I ADULT,LEVEL II PEDIATRIC':'Level 1 Adult2',
-                          'LEVEL I,LEVEL I PEDIATRIC':'Level 1 3',
-                          'LEVEL I,LEVEL II PEDIATRIC':'Level 1 4',
+                          'LEVEL I ADULT,LEVEL I PEDIATRIC':'Level 1 Adult_1',
+                          'LEVEL I ADULT,LEVEL II PEDIATRIC':'Level 1 Adult_2',
+                          'LEVEL I,LEVEL I PEDIATRIC':'Level 1_3',
+                          'LEVEL I,LEVEL II PEDIATRIC':'Level 1_4',
                           'LEVEL II':'Level 2',
-                          'LEVEL II / PEDIATRIC':'Level 2 3',
-                          'LEVEL II ADULT':'Level 2 4',
-                          'LEVEL II ADULT,LEVEL II PEDIATRIC':'Level 2 5',
-                          'LEVEL II REHAB':'Level 2 6',
-                          'LEVEL II,LEVEL II PEDIATRIC':'Level 2 7',
-                          'LEVEL II,LEVEL III PEDIATRIC,LEVEL II REHAB':'Level 2 8',
+                          'LEVEL II / PEDIATRIC':'Level 2_3',
+                          'LEVEL II ADULT':'Level 2_4',
+                          'LEVEL II ADULT,LEVEL II PEDIATRIC':'Level 2_5',
+                          'LEVEL II REHAB':'Level 2_6',
+                          'LEVEL II,LEVEL II PEDIATRIC':'Level 2_7',
+                          'LEVEL II,LEVEL III PEDIATRIC,LEVEL II REHAB':'Level 2_8',
                           'LEVEL III':'Level 3',
-                          'LEVEL III ADULT':'Level 3 1',
+                          'LEVEL III ADULT':'Level 3_1',
                           'LEVEL IV':'Level 4',
                           'LEVEL V':'Level 5'})
 
@@ -61,22 +61,3 @@ merge = merge.fillna(0)
 print(merge)
 merge.to_csv('trauma.csv')
 merge.to_file('trauma.gpkg',layer='trauma')
-
-df = gpd.read_file('trauma.gpkg')
-def lookup_coordinates(geoid):
-    latitude = ...
-    longitude = ...
-    return latitude, longitude
-
-latitudes = []
-longitudes = []
-
-for geoid in df['GEOID']:
-    latitude, longitude = lookup_coordinates(geoid)
-    latitudes.append(latitude)
-    longitudes.append(longitude)
-    
-df['Latitude'] = latitudes
-df['Longitude'] = longitudes
-
-df.to_file('trauma2.gpkg',layer='trauma2')
