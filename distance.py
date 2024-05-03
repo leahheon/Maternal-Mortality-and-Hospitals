@@ -35,24 +35,17 @@ data = data.to_crs(epsg=5070)
 
 counties = gpd.read_file('cb_2021_us_county_500k.zip',dtype={'COUNTYFP':str})
 counties = counties.to_crs(epsg=5070)
-data_join = counties.merge(data,left_on='STATE_NAME', right_on='state',how='left')
+
+counties_trim = counties[['GEOID','geometry','STATE_NAME']]
+data_trim = data[['GEOID','distance','TRAUMA']]
+
+data_join = counties_trim.merge(data_trim,how='right',on='GEOID')
+# data_join = data_join.fillna(0)
 
 plt.figure(figsize=(10,6))
-sns.violinplot(data=data_join,x='state',y='distance',hue='state',palette='Set2',split=True)
+sns.violinplot(data=data_join,x='TRAUMA',y='distance',hue='STATE_NAME',palette='Set2',split=True)
 plt.title('Average Distance to Nearest Level 1 Trauma Center')
 plt.xlabel('State')
 plt.ylabel('Distance (miles)')
 plt.grid(True)
 plt.tight_layout()
-
-CA_median = data_join[data_join['state'] == 'California']['distance'].median()
-AR_median = data_join[data_join['state'] == 'Arkansas']['distance'].median()
-CA_mean = data_join[data_join['state'] == 'California']['distance'].mean()
-AR_mean = data_join[data_join['state'] == 'Arkansas']['distance'].mean()
-
-plt.axhline(y=CA_median,color='blue',linestyle='--',label='CA Median')
-plt.axhline(y=AR_median,color='red',linestyle='--',label='AR Median')
-plt.axhline(y=CA_mean,color='blue',linestyle='-',label='CA Mean')
-plt.axhline(y=AR_mean,color='RED',linestyle='-',label='AR Mean')
-
-plt.legend()

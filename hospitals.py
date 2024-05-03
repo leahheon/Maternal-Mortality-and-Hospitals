@@ -5,7 +5,7 @@ import geopandas as gpd
 # read in hospital and county file 
 hospitals = pd.read_csv('hospitals.csv',dtype={'COUNTYFIPS':str})
 hospitals = hospitals.rename(columns={'COUNTYFIPS':'COUNTYFP'})
-counties = gpd.read_file('cb_2021_us_county_500k.zip',dtype={'COUNTYFP':str})
+counties = gpd.read_file('cb_2021_us_county_500k.zip')
 
 # create variable for crs 
 wgs84 = 4326
@@ -13,17 +13,18 @@ wgs84 = 4326
 # create a GeoDataFrame 
 geom = gpd.points_from_xy(hospitals['LONGITUDE'],hospitals['LATITUDE'])
 geo = gpd.GeoDataFrame(data=hospitals,geometry=geom,crs=wgs84)
+geo = geo.set_crs(5070,allow_override=True)
+geo.to_file('geo.gpkg',layer='geo')
 
 # group hospital data by county fips code and trauma level 
-counts = hospitals.groupby(['COUNTYFP','BEDS']).size().reset_index(name='hospital_beds')
-beds = counties.merge(counts,left_on='GEOID',right_on='COUNTYFP',how='left')
-beds = beds.fillna(0)
-beds.to_file('beds.gpkg',layer='beds')
+counts = hospitals.groupby(['COUNTYFP','TRAUMA']).size().reset_index(name='hospital_beds')
 #%%
 by_county = counts.unstack()
+by_county = by_county.to_frame(name='TRAUMA')
 by_county = by_county.fillna(0)
+by_county = by_county
 
-by_county = by_county.rename(columns={'LEVEL I':'Level 1',
+by_county['TRAUMA'] = by_county['TRAUMA'].replace({'LEVEL I':'Level 1',
                           'LEVEL I ADULT':'Level 1 Adult',
                           'LEVEL I ADULT,LEVEL I PEDIATRIC':'Level 1 Adult_1',
                           'LEVEL I ADULT,LEVEL II PEDIATRIC':'Level 1 Adult_2',
@@ -56,7 +57,7 @@ by_county['level4sum'] = by_county[level_4].sum(axis=1)
 level_5 = [col for col in by_county.columns if 'Level 5' in col]
 by_county['level5sum'] = by_county[level_5].sum(axis=1)
  
-merge = counties.merge(by_county,left_on='GEOID',right_on='COUNTYFP',how='left')
+merge = counties.merge(by_county,on='GEOID',how='left')
 merge = merge.fillna(0)
 print(merge)
 merge.to_csv('trauma.csv')
