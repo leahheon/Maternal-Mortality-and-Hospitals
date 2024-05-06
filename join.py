@@ -2,6 +2,7 @@
 import pandas as pd 
 import geopandas as gpd
 
+# 
 mortality = pd.read_csv('mortality.csv')
 mortality['COUNTYFP'] = mortality['COUNTYFP'].str.strip('"')
 counties = gpd.read_file('cb_2021_us_county_500k.zip',dtype={'COUNTYFP':str})

@@ -54,10 +54,10 @@ ca_total_pop = hospitals_all[hospitals_all['STATE'] == 'CA']
 ca_pop = ca_total_pop['POPULATION'].sum()
 
 #%%
+counties.set_geometry('geometry',inplace=True)
 level_1 = joined[joined['TRAUMA'] == 'LEVEL I']
 L1 = gpd.GeoDataFrame(level_1)
 
 L1.to_csv('L1.csv')
 
-counties.set_geometry('geometry',inplace=True)
 join = counties.sjoin(L1, how='left')
