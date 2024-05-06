@@ -15,6 +15,8 @@ My input data included three main sources:
    ## 3. County data 
    'cb_2021_us_county_500k.shp' is a Census cartographic boundary shapefile containing each county in the United States. I used this file to inform my visualizations in QGIS. 
 
+My output data includes the other csv files that I created within my scripts. 
+
 # Scripts:
 
 I created seven scripts include a variety of cleaning, merges, computations, and visualizations.
