@@ -35,12 +35,45 @@ I created seven scripts include a variety of cleaning, merges, computations, and
 
 # Visualizations: 
 
-This is the first visualization I made, which is a heatmap showing maternal deaths throughout the entire United States. For reference, the darkest red is where the most deaths occur.
+This is the first visualization I made, which is a heatmap showing maternal deaths throughout the entire United States. For reference, the darkest red is where the most deaths occur. The rest show similar heatmaps of different areas including points showing hospital locations. 
 
-!['deaths]('wholemap.png)
+!['deaths'](wholemap.png)
+
+Northeast mortality heatmap:
+!['Northeast'](NE_mortality_heatmap.png)
+
+South mortality heatmap:
+!['South'](S_mortality_heatmap.png)
+
+Split violin plot showing nearest Level 1 trauma center for California and Arkansas:
+!['violin'](avgdistance.png)
+
+California distance from county centroid to nearest hospital:
+!['California'](California.png)
+
+Arkansas distance from county centroid to nearest hospital: 
+!['Arkansas'](ARmap.png)
+
+California distance to nearest Level 1 trauma center:
+!['distance'](ca_l1distance.png)
+
+Arkansas distance to nearest Level 1, trauma center: 
+!['nearest'](ar_l1distance.png)
+
+California distance to nearest Level 1, 2, or 3 trauma center - Level 1 is the darkest purple and Level 3 is the lightest:
+!['trauma'](ca_l123trauma.png)
+
+Arkansas distance to nearest Level 1, 2, or 3 trauma center - Level 1 is the darkest purple and Level 3 is the lightest: 
+!['center'](ar_l123trauma.png)
 
 # Main findings: 
 
+Since death records are treated with a great sense of privacy, maintaining accuracy throughout this type of analysis was challenging. For example, the location of death often occurs at or is recorded at the hospital address, which poses difficulty for measuring distance from one's home address to the nearest hospital or level 1 trauma center. Since home addresses were not available to me, I used county centroids as my reference point when calculating nearest distances.
+
+Overall, I have confirmed what I suspected, which is that Level 1, 2, and 3 trauma centers are largely inaccessible to those in rural areas. While I cannot report the exact impact on maternal deaths without home addresses, I can infer from this analysis that distance to the nearest hospital does play a role in one's ability to receive emergent care. 
+
+Regarding my comparison between California and Arkansas, geographic data alone does not provide sufficient information to confirm nor deny the exact relationship between distance to the nearest hospital or Level 1 trauma center and maternal deaths; however, these maps do offer insight that could be coupled with other data, such as socioeconomic factors, to provide a more comprehensive exploration. 
+
 # Potential for future research: 
 
-Since death records are treated with a great sense of privacy, maintaining accuracy throughout this type of analysis was challenging. For example, the location of death often occurs at or is recorded at the hospital address, which poses difficulty for measuring distance from one's home address to the nearest hospital or level 1 trauma center. Since home addresses were not available to me, I used county centroids as my reference point when calculating nearest distances. Regarding future analysis, I am interested to shift from a geography-centric analysis to an analysis based on the cause of death. While I could certainly still complete a geographic analysis by mapping various birth-related causes of death, understanding the differences in death rates for each cause of death can lend itself to which trauma level is the most useful for maternal causes. 
+Regarding a future analysis, I am interested to shift from a geography-centric analysis to an analysis based on the cause of death. While I could certainly still complete a geographic analysis by mapping various birth-related causes of death, understanding the differences in death rates for each cause of death can lend itself to which trauma level is the most useful for maternal causes. 

@@ -19,7 +19,8 @@ geo = geo.set_crs(5070,allow_override=True)
 geo.to_file('geo.gpkg',layer='geo')
 
 # group hospital data by county fips code and trauma level 
-counts = hospitals.groupby(['COUNTYFP','TRAUMA']).size().reset_index(name='trauma')
+counts = hospitals.groupby(['COUNTYFP','TRAUMA']).size().reset_index('count')
+counts_frame = counts.to_frame(name='TRAUMA')
 
 counts['TRAUMA'] = counts['TRAUMA'].replace({'LEVEL I':'Level 1',
                           'LEVEL I ADULT':'Level 1 Adult',
