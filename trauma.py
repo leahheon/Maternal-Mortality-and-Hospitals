@@ -6,7 +6,7 @@ import geopandas as gpd
 counties = gpd.read_file('cb_2021_us_county_500k.zip',dtype={'COUNTYFP':str})
 
 # read in hospital file 
-hospitals_all = gpd.read_file('hospitals_all.shp',ignore_geometry=True)
+hospitals_all = gpd.read_file('Hospitals.zip',ignore_geometry=True)
 trauma = hospitals_all['TRAUMA'].value_counts()
 
 # add all variations into three columns
@@ -41,7 +41,7 @@ shortest_line_CA = gpd.read_file('shortest_line.shp')
 distance = 'distance'
 avg_distance_CA = shortest_line_CA[distance].mean()
 
-shortest_line_AR = gpd.read_file('ARShortest_lines.shp',ignore_geometry=True)
+shortest_line_AR = gpd.read_file('ARshortest_lines.shp',ignore_geometry=True)
 distance='distance'
 avg_distance_AR = shortest_line_AR[distance].mean()
 

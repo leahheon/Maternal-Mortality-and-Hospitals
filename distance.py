@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns 
 
 # read in shortest line shapefiles for CA and AR
-l1_shortest_line_CA = gpd.read_file('ca_l1_lines.shp')
-l1_shortest_line_AR = gpd.read_file('ar_l1_lines.shp',ignore_geometry=True)
+l1_shortest_line_CA = gpd.read_file('ca_l1shortest.shp')
+l1_shortest_line_AR = gpd.read_file('ar_l1shortest.shp')
 
 # rename files 
 california = l1_shortest_line_CA
@@ -19,14 +19,14 @@ data = pd.concat([california,arkansas])
 
 # change crs 
 data = data.to_crs(epsg=5070)
-
+#%%
 # read in counties file and change crs to match data 
 counties = gpd.read_file('cb_2021_us_county_500k.zip',dtype={'COUNTYFP':str})
 counties = counties.to_crs(epsg=5070)
 
 # trimmed both dataframes to include only necessary columns
-counties_trim = counties[['GEOID','geometry','STATE_NAME']]
-data_trim = data[['GEOID','distance','TRAUMA']]
+counties_trim = counties[['GEOID','geometry']]
+data_trim = data[['GEOID','distance','TRAUMA','STATE_NAME']]
 
 # merge data onto counties
 data_join = counties_trim.merge(data_trim,how='right',on='GEOID')
