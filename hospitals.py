@@ -19,8 +19,7 @@ geo = geo.set_crs(5070,allow_override=True)
 geo.to_file('geo.gpkg',layer='geo')
 
 # group hospital data by county fips code and trauma level 
-counts = hospitals.groupby(['COUNTYFP','TRAUMA']).size().reset_index('count')
-counts_frame = counts.to_frame(name='TRAUMA')
+counts = hospitals.groupby(['COUNTYFP','TRAUMA']).size().reset_index(name='count')
 
 counts['TRAUMA'] = counts['TRAUMA'].replace({'LEVEL I':'Level 1',
                           'LEVEL I ADULT':'Level 1 Adult',
@@ -95,12 +94,6 @@ by_county['level4sum'] = by_county[level_4].sum(axis=1)
 
 level_5 = [col for col in by_county.columns if 'Level 5' in col]
 by_county['level5sum'] = by_county[level_5].sum(axis=1)
-#%%
-# merge by_county onto counties on GEOID
-merge = counties.merge(by_county,on='GEOID',how='left')
-merge = merge.fillna(0)
-print(merge)
 
 # save as csv and geopackage 
-merge.to_csv('trauma.csv')
-merge.to_file('trauma.gpkg',layer='trauma')
+by_county.to_csv('trauma.csv')

@@ -37,7 +37,7 @@ I created seven scripts include a variety of cleaning, merges, computations, and
 
 # Visualizations: 
 
-This is the first visualization I made, which is a heatmap showing maternal deaths throughout the entire United States. For reference, the darkest red is where the most deaths occur. The rest show similar heatmaps of different areas including points showing hospital locations. 
+This is the first visualization I made, which is a heatmap showing maternal deaths throughout the entire United States. For reference, the darkest red is where the most deaths occur. The rest show similar heatmaps of different areas including points showing hospital locations. As an aside, I created a few more visualizations that did not end up as a main part of my analysis, but I included in the repository for reference. 
 
 !['deaths'](wholemap.png)
 
